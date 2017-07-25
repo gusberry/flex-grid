@@ -1,10 +1,17 @@
 import { handleActions } from 'redux-actions';
 import * as actions from '../actions/layout';
 
-import rootState, { createNewContainer, getRootState } from './layoutUtils';
+import {
+  createNewContainer,
+  getRootState,
+  deSerializePayloadToState,
+} from './layoutUtils';
 
 const reducer = handleActions(
   {
+    [actions.initLayoutFromPayload]: (state, { payload }) =>
+      deSerializePayloadToState(payload),
+
     [actions.createContainer]: (state, { payload }) =>
       state.updateIn([...payload.parentFlexBoxPath, 'children'], children =>
         children.push(createNewContainer(payload.data)),
@@ -44,8 +51,7 @@ const reducer = handleActions(
         );
     },
   },
-  rootState,
-  //getRootState(),
+  getRootState(),
 );
 
 export default reducer;

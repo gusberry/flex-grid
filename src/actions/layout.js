@@ -1,5 +1,10 @@
 import { createAction } from 'redux-actions';
 
+export const initLayoutFromPayload = createAction(
+  'GRID:INIT_LAYOUT_FROM_PAYLOAD',
+  payload => payload,
+);
+
 export const createContainer = createAction(
   'GRID:CREATE_CONTAINER',
   ({ parentFlexBoxPath, data }) => ({ parentFlexBoxPath, data }),
