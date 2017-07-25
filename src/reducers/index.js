@@ -1,8 +1,6 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux-immutable';
 import layout from './layout';
-import containers from './containers';
 
 export default combineReducers({
   layout,
-  containers,
 });
