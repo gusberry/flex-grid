@@ -12,8 +12,9 @@ class Layout extends Component {
       column={parentPath.length === 4 && true}
       style={centerStyle}
       key={[...parentPath, index].join('')}
+      data={childData.data}
+      path={[...parentPath]}
     >
-      {childData.data}
       {childData.children.map((innerChildData, innerIndex) =>
         this.renderInnerViews(innerChildData, innerIndex, [
           ...parentPath,
@@ -26,14 +27,14 @@ class Layout extends Component {
   render() {
     this.props.onLayoutChange(serializeStateToPayload(this.props.layout)); // <-- demo
     return (
-      <View column className="layout">
+      <div className="layout">
         {this.props.layout.children.map((innerChildData, innerIndex) =>
           this.renderInnerViews(innerChildData, innerIndex, [
             'children',
             innerIndex,
           ]),
         )}
-      </View>
+      </div>
     );
   }
 }

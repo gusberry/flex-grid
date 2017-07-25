@@ -40,8 +40,17 @@ const reducer = handleActions(
         );
       }
 
-      if (!targetContainer.get('data')) {
+      if (
+        !targetContainer.get('data') &&
+        !targetContainer.get('children').size
+      ) {
         return nextState.setIn([...payload.to], container);
+      }
+
+      if (targetContainer.get('children').size) {
+        return nextState.updateIn([...payload.to, 'children'], children =>
+          children.push(container),
+        );
       }
 
       return nextState

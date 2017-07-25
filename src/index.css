@@ -4,7 +4,12 @@ body {
   font-family: sans-serif;
 }
 
-.layout div {
-  margin: 5px;
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-container {
+  padding: 5px;
   border: 1px solid black;
 }
