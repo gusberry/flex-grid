@@ -6,7 +6,17 @@ const target = {
       props.moveContainer({ from: monitor.getItem().from, to: props.path });
     }
   },
-  canDrop: props => props.path && props.path.length !== 6,
+  canDrop: (props, monitor) => {
+    if (!props.path) {
+      return false;
+    }
+    const { from } = monitor.getItem();
+    const isDroppingOnContainer = props.path.length === 6;
+    const isDroppingOnTheSameLevel =
+      from.slice(0, props.path.length).join('') === props.path.join('');
+
+    return !isDroppingOnContainer && !isDroppingOnTheSameLevel;
+  },
 };
 
 function collect(connect, monitor) {

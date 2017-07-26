@@ -29,35 +29,34 @@ const reducer = handleActions(
     [actions.moveContainer]: (state, { payload }) => {
       const container = state.getIn([...payload.from]);
       const targetContainer = state.getIn([...payload.to]);
-      const parentContainerPath = payload.from.slice(0, -2);
 
-      let nextState = state.deleteIn([...payload.from]);
+      const isTargetContainsData = targetContainer.get('data');
 
-      if (state.getIn([...parentContainerPath, 'children']).length === 1) {
-        nextState = nextState.setIn(
-          [...parentContainerPath],
-          nextState.getIn([...parentContainerPath, 'children', 0]),
-        );
+      let nextState = state;
+
+      if (isTargetContainsData) {
+        nextState = nextState
+          .setIn([...payload.to, 'data'], null)
+          .updateIn([...payload.to, 'children'], children =>
+            children.push(targetContainer),
+          );
       }
 
-      if (
-        !targetContainer.get('data') &&
-        !targetContainer.get('children').size
-      ) {
-        return nextState.setIn([...payload.to], container);
-      }
-
-      if (targetContainer.get('children').size) {
-        return nextState.updateIn([...payload.to, 'children'], children =>
-          children.push(container),
-        );
-      }
-
-      return nextState
-        .setIn([...payload.to, 'data'], null)
+      nextState = nextState
         .updateIn([...payload.to, 'children'], children =>
-          children.push(targetContainer).push(container),
-        );
+          children.push(container),
+        )
+        .deleteIn([...payload.from]);
+
+      const isCellEmpty =
+        !nextState.getIn([...payload.from.slice(0, -1)]).size &&
+        !nextState.getIn([...payload.from.slice(0, -2), 'data']);
+
+      if (isCellEmpty) {
+        nextState = nextState.deleteIn([...payload.from.slice(0, -2)]);
+      }
+
+      return nextState;
     },
   },
   getRootState(),

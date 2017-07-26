@@ -4,6 +4,9 @@ const source = {
   beginDrag(props) {
     return { from: props.path };
   },
+  canDrag(props) {
+    return props.data;
+  },
 };
 
 function collect(connect, monitor) {

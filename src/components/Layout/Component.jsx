@@ -25,7 +25,6 @@ class Layout extends Component {
     </View>;
 
   render() {
-    this.props.onLayoutChange(serializeStateToPayload(this.props.layout)); // <-- demo
     return (
       <div className="layout">
         {this.props.layout.children.map((innerChildData, innerIndex) =>
